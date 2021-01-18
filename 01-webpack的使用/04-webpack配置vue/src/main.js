@@ -33,3 +33,5 @@ new Vue({
         App
     }
 })
+
+// document.writeln('<button>核弹按钮</button>')

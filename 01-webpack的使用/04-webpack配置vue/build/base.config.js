@@ -11,7 +11,7 @@ const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
     entry: './src/main.js',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '../dist'),
         filename: 'bundle.js',
         // 添加打包html的plugin后不再需要
         // publicPath: 'dist/'
@@ -75,7 +75,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'index.html'
         }),
-        new UglifyjsWebpackPlugin()
+        // new UglifyjsWebpackPlugin()
     ],
 
     resolve: {
@@ -84,8 +84,10 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js'
         }
     },
-    devServer: {
-        contentBase: './dist',
-        inline: true,
-    }
+    // 生产环境用不上的配置先注释掉
+    // devServer: {
+    //     contentBase: './dist',
+    //     inline: true,
+        
+    // }
 }
