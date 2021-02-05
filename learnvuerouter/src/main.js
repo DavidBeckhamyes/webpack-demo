@@ -1,3 +1,4 @@
+// 自动查找index文件，所以可以省略index
 import Vue from 'vue'
 import App from './App'
 import router from './router'
