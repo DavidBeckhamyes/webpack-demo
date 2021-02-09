@@ -27,11 +27,14 @@ const routes = [
     // 协议头：//host/query
     path: '/home',
     component: Home,
+    meta: {
+      title: '首页'
+    },
     children: [
-      {
-        path: '',
-        redirect: 'news'
-      },
+      // {
+      //   path: '',
+      //   redirect: 'news'
+      // },
       {
         path: 'news',
         component: HomeNews
@@ -44,15 +47,28 @@ const routes = [
   },
   {
     path: '/about',
-    component: About
+    component: About,
+    meta: {
+      title: '关于'
+    },
+    beforeEnter: (to, from, next) => {
+      // console.log("about BeforeEnter");
+      next()
+    }
   },
   {
     path: '/user/:userId',
-    component: User
+    component: User,
+    meta: {
+      title: '用户'
+    }
   },
   {
     path: '/profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      title: '档案'
+    }
   }
 ]
 
@@ -61,6 +77,17 @@ const router = new VueRouter({
   routes,
   mode: "history",
   linkActiveClass: "active"
+})
+
+// 前置钩子(hook)
+router.beforeEach((to, from, next) => {
+  // 从from跳转到to
+  document.title = to.matched[0].meta.title
+  next()
+})
+
+// 后置钩子
+router.afterEach((to, from) => {
 })
 
 // 3.将router对象传入到Vue实例中
