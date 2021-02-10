@@ -1,27 +1,45 @@
 <template>
   <div id="tab-bar">
-    <div class="tab-item">
-      <i class="iconfont iconshangcheng-shouye-xian"></i>
-      首页
-    </div>
-    <div class="tab-item">
-      <i class="iconfont iconshangcheng-fenlei-xian"></i>
-      分类
-    </div>
-    <div class="tab-item">
-      <i class="iconfont iconshangcheng-gouwuche-xian"></i>
-      购物车
-    </div>
-    <div class="tab-item">
-      <i class="iconfont iconshangcheng-wode-xian"></i>
-      我的
-    </div>
+    <TabBarItem path="/home" activeColor="blue">
+      <i slot="item-icon" class="iconfont iconshangcheng-shouye-xian"></i>
+      <i
+        slot="item-icon-active"
+        class="iconfont iconshangcheng-fenlei-mian"
+      ></i>
+      <div slot="item-text">首页</div>
+    </TabBarItem>
+    <TabBarItem path="/category" activeColor="blue">
+      <i slot="item-icon" class="iconfont iconshangcheng-fenlei-xian"></i>
+      <i
+        slot="item-icon-active"
+        class="iconfont iconshangcheng-fenlei-mian"
+      ></i>
+      <div slot="item-text">分类</div>
+    </TabBarItem>
+    <TabBarItem path="/cart" activeColor="blue">
+      <i slot="item-icon" class="iconfont iconshangcheng-gouwuche-xian"></i>
+      <i
+        slot="item-icon-active"
+        class="iconfont iconshangcheng-gouwuche-mian"
+      ></i>
+      <div slot="item-text">购物车</div>
+    </TabBarItem>
+    <TabBarItem path="/profile" activeColor="blue">
+      <i slot="item-icon" class="iconfont iconshangcheng-wode-xian"></i>
+      <i slot="item-icon-active" class="iconfont iconshangcheng-wode-mian"></i>
+      <div slot="item-text">我的</div>
+    </TabBarItem>
   </div>
 </template>
 
 <script>
+import TabBarItem from "./TabBarItem";
+
 export default {
   name: "TabBar",
+  components: {
+    TabBarItem,
+  },
 };
 </script>
 
