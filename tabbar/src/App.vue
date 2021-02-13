@@ -17,6 +17,6 @@ export default {
 </script>
 
 <style>
-@import "./assets/css/base.css";
-@import "./assets/icon-font/iconfont.css";
+@import "assets/css/base.css";
+@import "assets/icon-font/iconfont.css";
 </style>
