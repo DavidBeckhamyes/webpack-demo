@@ -1,16 +1,12 @@
-<template>
-  
-</template>
+<template></template>
 
 <script>
-
 export default {
-  name: 'App',
-  components: {
-  }
-}
+  name: "App",
+  components: {},
+};
 </script>
 
 <style>
-
+@import "./assets/css/base.css";
 </style>

@@ -1,0 +1,15 @@
+import { useCssModule } from "vue";
+
+module.exports = {
+    configureWebpack: {
+        resolve: {
+            alias: {
+                'assets': '@/assets',
+                'common': '@/common',
+                'components': '@/components',
+                'network': '@/network',
+                'router': '@/views'
+            }
+        }
+    }
+}
