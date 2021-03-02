@@ -1,5 +1,3 @@
-import { useCssModule } from "vue";
-
 module.exports = {
     configureWebpack: {
         resolve: {
@@ -8,7 +6,8 @@ module.exports = {
                 'common': '@/common',
                 'components': '@/components',
                 'network': '@/network',
-                'router': '@/views'
+                'router': '@/router',
+                'views': '@/views'
             }
         }
     }
