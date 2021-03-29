@@ -8,7 +8,10 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"></tab-control>
+    <tab-control
+      class="tab-control"
+      :titles="['流行', '新款', '精选']"
+    ></tab-control>
     <ul>
       <li>列表1</li>
       <li>列表2</li>
@@ -87,6 +90,11 @@ export default {
     return {
       banners: [],
       recommends: [],
+      goods: {
+        'pop': { page: 0, list: [] },
+        'news': { page: 0, list: [] },
+        'sell': { page: 0, list: [] }
+      },
     };
   },
   // Options API
@@ -126,5 +134,6 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+  background-color: #ffffff;
 }
 </style>
