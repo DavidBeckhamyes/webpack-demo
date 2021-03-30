@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { getHomeMultidata } from "network/home";
+import { getHomeMultidata, getHomeGoods } from "network/home";
 import HomeSwiper from "./childComponents/HomeSwiper";
 import RecommendView from "./childComponents/RecommendView";
 import FeatureView from "./childComponents/FeatureView";
@@ -91,20 +91,40 @@ export default {
       banners: [],
       recommends: [],
       goods: {
-        'pop': { page: 0, list: [] },
-        'news': { page: 0, list: [] },
-        'sell': { page: 0, list: [] }
+        pop: { page: 0, list: [] },
+        new: { page: 0, list: [] },
+        sell: { page: 0, list: [] },
       },
     };
   },
   // Options API
   created() {
     // 1.请求多个数据
-    getHomeMultidata().then((res) => {
-      this.banners = res.banner.list;
-      this.recommends = res.recommend.list;
-      console.log(this.banners);
-    });
+    this.getHomeMultidata();
+    // 2.请求商品数据
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
+  },
+
+  methods: {
+    getHomeMultidata() {
+      getHomeMultidata().then((res) => {
+        this.banners = res.banner.list;
+        this.recommends = res.recommend.list;
+        console.log("banner广告位=>", this.banners);
+      });
+    },
+
+    getHomeGoods(type) {
+      console.log(this.goods[type]);
+
+      const page = this.goods[type].page + 1;
+      getHomeGoods(type, page).then((res) => {
+        this.goods[type].list.push(...res.list);
+        this.goods[type].page += 1
+      });
+    },
   },
 
   // vue3.0方式
