@@ -5,15 +5,17 @@
         <div>购物街</div>
       </template>
     </nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control
-      class="tab-control"
-      :titles="['流行', '新款', '精选']"
-      @tabClick="tabClick"
-    ></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <scroll class="content">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control
+        class="tab-control"
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+      ></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </scroll>
 
     <ul>
       <li>列表1</li>
@@ -77,6 +79,8 @@ import RecommendView from "./childComponents/RecommendView";
 import FeatureView from "./childComponents/FeatureView";
 
 import NavBar from "components/common/navbar/NavBar";
+import Scroll from "components/common/scroll/Scroll";
+
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 // import { onMounted } from "vue";
@@ -90,6 +94,7 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
+    Scroll,
   },
   data() {
     return {
@@ -100,13 +105,13 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      currentType: 'pop'
+      currentType: "pop",
     };
   },
-  computed:{
+  computed: {
     showGoods() {
-      return this.goods[this.currentType].list
-    }
+      return this.goods[this.currentType].list;
+    },
   },
   // Options API
   created() {
@@ -144,16 +149,16 @@ export default {
      * 事件监听的相关方法
      */
     tabClick(index) {
-      switch(index) {
+      switch (index) {
         case 0:
-          this.currentType = 'pop'
-          break
+          this.currentType = "pop";
+          break;
         case 1:
-          this.currentType = 'new'
-          break
+          this.currentType = "new";
+          break;
         case 2:
-          this.currentType = 'sell'
-          break
+          this.currentType = "sell";
+          break;
       }
     },
   },
@@ -171,6 +176,10 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+}
+.content {
+  height: calc(100vh - 93px);
+  overflow: hidden;
 }
 .home-nav {
   background-color: var(--color-tint);
