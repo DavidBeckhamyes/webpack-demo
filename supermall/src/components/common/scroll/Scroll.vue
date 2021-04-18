@@ -16,11 +16,39 @@ export default {
       scroll: null,
     };
   },
+  props: {
+    probeType: {
+      type: Number,
+      messae: 0,
+    },
+    pullUpLoad: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mounted() {
+    // 1.创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper, {
       click: true,
       observeDOM: true,
+      probeType: this.probeType,
+      pullUpLoad: this.pullUpLoad,
     });
+
+    // 2.监听滚动的位置
+    this.scroll.on("scroll", (position) => {
+      this.$emit("scroll", position);
+    });
+
+    // 3.监听上拉事件
+    this.scroll.on("pullingUp", () => {
+      this.$emit("pullingUp");
+    });
+  },
+  methods: {
+    finishPullUp() {
+      this.scroll.finishPullUp();
+    },
   },
 };
 </script>

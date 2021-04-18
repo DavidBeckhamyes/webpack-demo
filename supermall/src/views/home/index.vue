@@ -5,7 +5,14 @@
         <div>购物街</div>
       </template>
     </nav-bar>
-    <scroll class="content">
+    <scroll
+      @scroll="contentScroll"
+      @pullingUp="loadMore"
+      class="content"
+      ref="scroll"
+      :pull-up-load="true"
+      :probe-type="3"
+    >
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -16,59 +23,7 @@
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
-
-    <ul>
-      <li>列表1</li>
-      <li>列表2</li>
-      <li>列表3</li>
-      <li>列表4</li>
-      <li>列表5</li>
-      <li>列表6</li>
-      <li>列表7</li>
-      <li>列表8</li>
-      <li>列表9</li>
-      <li>列表10</li>
-      <li>列表11</li>
-      <li>列表12</li>
-      <li>列表13</li>
-      <li>列表14</li>
-      <li>列表15</li>
-      <li>列表16</li>
-      <li>列表17</li>
-      <li>列表18</li>
-      <li>列表19</li>
-      <li>列表20</li>
-      <li>列表21</li>
-      <li>列表22</li>
-      <li>列表23</li>
-      <li>列表24</li>
-      <li>列表25</li>
-      <li>列表26</li>
-      <li>列表27</li>
-      <li>列表28</li>
-      <li>列表29</li>
-      <li>列表30</li>
-      <li>列表31</li>
-      <li>列表32</li>
-      <li>列表33</li>
-      <li>列表34</li>
-      <li>列表35</li>
-      <li>列表36</li>
-      <li>列表37</li>
-      <li>列表38</li>
-      <li>列表39</li>
-      <li>列表40</li>
-      <li>列表41</li>
-      <li>列表42</li>
-      <li>列表43</li>
-      <li>列表44</li>
-      <li>列表45</li>
-      <li>列表46</li>
-      <li>列表47</li>
-      <li>列表48</li>
-      <li>列表49</li>
-      <li>列表50</li>
-    </ul>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -83,6 +38,7 @@ import Scroll from "components/common/scroll/Scroll";
 
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
+import BackTop from "components/content/backTop/BackTop";
 // import { onMounted } from "vue";
 
 export default {
@@ -95,6 +51,7 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
+    BackTop,
   },
   data() {
     return {
@@ -106,6 +63,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      isShowBackTop: false,
     };
   },
   computed: {
@@ -142,6 +100,8 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.list);
         this.goods[type].page += 1;
+
+        this.$refs.scroll.finishPullUp();
       });
     },
 
@@ -161,6 +121,24 @@ export default {
           break;
       }
     },
+
+    /**
+     * 回到顶部
+     */
+    backClick() {
+      this.$refs.scroll.scroll.scrollTo(0, 0, 500);
+    },
+
+    /**
+     * 滑动监听
+     */
+    contentScroll(position) {
+      this.isShowBackTop = Math.abs(position.y) > 1000;
+    },
+
+    loadMore() {
+      this.getHomeGoods(this.currentType);
+    },
   },
 
   // vue3.0方式
@@ -176,6 +154,7 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  height: calc(100vh - 49px);
 }
 .content {
   height: calc(100vh - 93px);
