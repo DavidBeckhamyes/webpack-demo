@@ -5,6 +5,13 @@
         <div>购物街</div>
       </template>
     </nav-bar>
+    <tab-control
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControlTop"
+      class="tab-control-top"
+      v-show="isTabFixed"
+    ></tab-control>
     <scroll
       @scroll="contentScroll"
       @pullingUp="loadMore"
@@ -13,13 +20,16 @@
       :pull-up-load="true"
       :probe-type="3"
     >
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper
+        :banners="banners"
+        @swiperImageLoad="swiperImageLoad"
+      ></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control
-        class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
+        ref="tabControl"
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
@@ -40,6 +50,8 @@ import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import BackTop from "components/content/backTop/BackTop";
 // import { onMounted } from "vue";
+
+import { debounce } from "common/utils";
 
 export default {
   name: "home",
@@ -64,6 +76,8 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false,
     };
   },
   computed: {
@@ -82,25 +96,19 @@ export default {
   },
 
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll.refresh, 50);
-    // 3.监听item中图片加载完成
+    // 1.图片加载完成的事件监听
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
+    // 监听item中图片加载完成
     this.$bus.on("itemImageLoad", () => {
       // this.$refs.scroll.refresh();
       refresh();
     });
+    // 2.获取tabControl的offsetTop
+    // 所有的组件都有一个属性$el：用于获取组件中的元素，未必准确，因为图片有可能未加载完
+    // this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
   },
 
   methods: {
-    debounce(func, delay) {
-      let timer = null;
-      return function () {
-        if (timer) clearTimeout(timer);
-
-        timer = setTimeout((...args) => {
-          func.apply(this, args);
-        }, delay);
-      };
-    },
     /**
      * 网络请求相关的方法
      */
@@ -120,7 +128,7 @@ export default {
         this.goods[type].list.push(...res.list);
         this.goods[type].page += 1;
 
-        // this.$refs.scroll.finishPullUp();
+        this.$refs.scroll.finishPullUp();
       });
     },
 
@@ -139,6 +147,8 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tabControl.currentIndex = index;
+      this.$refs.tabControlTop.currentIndex = index;
     },
 
     /**
@@ -152,11 +162,18 @@ export default {
      * 滑动监听
      */
     contentScroll(position) {
+      // 1.判断BackTop是否显示
       this.isShowBackTop = Math.abs(position.y) > 1000;
+      // 2.决定tabControl是否吸顶(position:fixed)
+      this.isTabFixed = Math.abs(position.y) > this.tabOffsetTop - 44;
     },
 
     loadMore() {
-      // this.getHomeGoods(this.currentType);
+      this.getHomeGoods(this.currentType);
+    },
+
+    swiperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
     },
   },
 
@@ -172,8 +189,8 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
-  height: calc(100vh - 49px);
+  /* padding-top: 44px; */
+  /* height: calc(100vh - 49px); */
 }
 .content {
   height: calc(100vh - 93px);
@@ -182,17 +199,21 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: #ffffff;
-  position: fixed;
+
+  /* 在使用浏览器原生滚动时，为了让导航不跟随一起滚动 */
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 
-.tab-control {
-  position: sticky;
+.tab-control-top {
+  position: fixed;
+  left: 0;
+  right: 0;
   top: 44px;
-  background-color: #ffffff;
   z-index: 9;
+  background-color: #ffffff;
 }
 </style>
