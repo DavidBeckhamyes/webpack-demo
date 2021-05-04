@@ -81,7 +81,26 @@ export default {
     this.getHomeGoods("sell");
   },
 
+  mounted() {
+    const refresh = this.debounce(this.$refs.scroll.refresh, 50);
+    // 3.监听item中图片加载完成
+    this.$bus.on("itemImageLoad", () => {
+      // this.$refs.scroll.refresh();
+      refresh();
+    });
+  },
+
   methods: {
+    debounce(func, delay) {
+      let timer = null;
+      return function () {
+        if (timer) clearTimeout(timer);
+
+        timer = setTimeout((...args) => {
+          func.apply(this, args);
+        }, delay);
+      };
+    },
     /**
      * 网络请求相关的方法
      */
@@ -101,7 +120,7 @@ export default {
         this.goods[type].list.push(...res.list);
         this.goods[type].page += 1;
 
-        this.$refs.scroll.finishPullUp();
+        // this.$refs.scroll.finishPullUp();
       });
     },
 
@@ -137,7 +156,7 @@ export default {
     },
 
     loadMore() {
-      this.getHomeGoods(this.currentType);
+      // this.getHomeGoods(this.currentType);
     },
   },
 
