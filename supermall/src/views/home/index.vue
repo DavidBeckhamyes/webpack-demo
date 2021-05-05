@@ -78,6 +78,7 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
+      saveY: 0, // 页面离开时滚动的高度
     };
   },
   computed: {
@@ -106,6 +107,20 @@ export default {
     // 2.获取tabControl的offsetTop
     // 所有的组件都有一个属性$el：用于获取组件中的元素，未必准确，因为图片有可能未加载完
     // this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
+  },
+
+  unmounted() {
+    console.log("home destroyed");
+  },
+
+  activated() {
+    this.$refs.scroll.scroll.scrollTo(0, this.saveY, 0);
+    // 为了解决可能滚动会失效，所以刷新
+    this.$refs.scroll.refresh();
+  },
+
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY();
   },
 
   methods: {

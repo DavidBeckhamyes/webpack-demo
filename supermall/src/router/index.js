@@ -4,6 +4,7 @@ const Home = () => import("views/home")
 const Category = () => import("views/category")
 const Cart = () => import("views/cart")
 const Profile = () => import("views/profile")
+const Detail = () => import("views/detail")
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
   {
     path: "/profile",
     component: Profile
+  },
+  {
+    // 动态路由传参写法
+    path: "/detail",
+    component: Detail
   }
 ];
 
