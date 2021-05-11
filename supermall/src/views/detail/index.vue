@@ -1,10 +1,12 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav"></detail-nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
+      <detail-goods-info :detail-info="detailInfo"></detail-goods-info>
+      <detail-param-info :param-info="paramInfo"></detail-param-info>
     </scroll>
   </div>
 </template>
@@ -14,10 +16,12 @@ import DetailNavBar from "./childComponents/DetailNavBar";
 import DetailSwiper from "./childComponents/DetailSwiper";
 import DetailBaseInfo from "./childComponents/DetailBaseInfo";
 import DetailShopInfo from "./childComponents/DetailShopInfo";
+import DetailGoodsInfo from "./childComponents/DetailGoodsInfo";
+import DetailParamInfo from "./childComponents/DetailParamInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetail, GoodsInfo, shop } from "network/detail";
+import { getDetail, GoodsInfo, shop, GoodsParam } from "network/detail";
 export default {
   name: "Detail",
   components: {
@@ -25,6 +29,8 @@ export default {
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
+    DetailGoodsInfo,
+    DetailParamInfo,
     Scroll,
   },
   data() {
@@ -33,6 +39,8 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
+      detailInfo: {},
+      paramInfo: {},
     };
   },
   created() {
@@ -51,7 +59,19 @@ export default {
       );
       // 2.3 创建店铺信息的对象
       this.shop = new shop(data.shopInfo);
+      // 2.4 保存商品详情数据
+      this.detailInfo = data.detailInfo;
+      // 2.5 获取参数的信息
+      this.paramInfo = new GoodsParam(
+        data.itemParams.info,
+        data.itemParams.rule
+      );
     });
+  },
+  methods: {
+    imageLoad() {
+      this.$refs.scroll.refresh();
+    },
   },
 };
 </script>

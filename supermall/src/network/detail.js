@@ -22,6 +22,15 @@ export class GoodsInfo {
     }
 }
 
+export class GoodsParam {
+    constructor(info, rule) {
+        // 注：images可能没有值（某些商品有值，某些商品没有）
+        this.image = info.images ? info.images[0] : '';
+        this.infos = info.set;
+        this.sizes = rule.tables;
+    }
+}
+
 export class shop {
     constructor(shopInfo) {
         this.log = shopInfo.shopLogo;
