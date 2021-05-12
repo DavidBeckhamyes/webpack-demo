@@ -1,12 +1,22 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"></detail-nav-bar>
+    <detail-nav-bar
+      class="detail-nav"
+      @titleClick="titleClick"
+    ></detail-nav-bar>
     <scroll class="content" ref="scroll">
+      <!-- 属性：topImages 传入值：top-images -->
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
-      <detail-goods-info :detail-info="detailInfo"></detail-goods-info>
-      <detail-param-info :param-info="paramInfo"></detail-param-info>
+      <detail-goods-info
+        :detail-info="detailInfo"
+        @imageLoad="imageLoad"
+      ></detail-goods-info>
+      <detail-param-info
+        :param-info="paramInfo"
+        ref="params"
+      ></detail-param-info>
     </scroll>
   </div>
 </template>
@@ -22,6 +32,9 @@ import DetailParamInfo from "./childComponents/DetailParamInfo";
 import Scroll from "components/common/scroll/Scroll";
 
 import { getDetail, GoodsInfo, shop, GoodsParam } from "network/detail";
+
+import { debounce } from "common/utils";
+
 export default {
   name: "Detail",
   components: {
@@ -41,6 +54,8 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
+      themeTopYs: [],
+      getThemeTopY: null,
     };
   },
   created() {
@@ -67,10 +82,23 @@ export default {
         data.itemParams.rule
       );
     });
+    this.getThemeTopY = debounce(() => {
+      // 根据最新的数据，对应的DOM是已经被渲染出来
+      // 但是图片依然是没有加载完(目前获取到的offsetTop是不包含其中的图片的)
+      // offsetTop值不对的时候，都是因为图片的问题
+      this.themeTopYs = [];
+      this.themeTopYs.push(0);
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop - 44);
+      console.log(this.themeTopYs);
+    });
   },
   methods: {
     imageLoad() {
       this.$refs.scroll.refresh();
+      this.getThemeTopY();
+    },
+    titleClick(index) {
+      this.$refs.scroll.scroll.scrollTo(0, -this.themeTopYs[index], 100);
     },
   },
 };
