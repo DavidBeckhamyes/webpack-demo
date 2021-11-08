@@ -1,6 +1,7 @@
 // 生产环境配置
 
-const path = require('path');
+// const path = require('path');
+const { resolveApp } = require('../utils/path');
 
 // 打包体积分析
 const BundleAnalyzerPlugin =
@@ -16,7 +17,7 @@ module.exports = merge(common, {
         filename: '[name].[contenthash].bundle.js',
 
         // bundle 文件路径
-        path: path.resolve('./dist/'),
+        path: resolveApp('dist'),
 
         // 编译前清除目录
         clean: true

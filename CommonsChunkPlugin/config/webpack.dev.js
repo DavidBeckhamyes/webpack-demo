@@ -1,7 +1,8 @@
 // 开发环境配置
 
 // output中的path需要绝对路径
-const path = require('path');
+// const path = require('path');
+const { resolveApp } = require('../utils/path');
 
 // 编译速度分析
 // 优化 webpack 构建速度，首先需要知道是哪些插件、哪些 loader 耗时长，方便我们针对性的优化。
@@ -19,7 +20,7 @@ module.exports = smp.wrap(merge(common, {
         filename: '[name].bundle.js',
 
         // bundle 文件路径
-        path: path.resolve('./dist/'),
+        path: resolveApp('dist'),
 
         // 编译前清除目录
         clean: true
