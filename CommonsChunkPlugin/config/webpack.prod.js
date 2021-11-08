@@ -25,6 +25,12 @@ module.exports = merge(common, {
     plugins: [
         new BundleAnalyzerPlugin(),
     ],
+    optimization: {
+        splitChunks: {
+            // include all types of chunks
+            chunks: 'all',
+        },
+    },
     // 生产模式
     mode: 'production',
 })
