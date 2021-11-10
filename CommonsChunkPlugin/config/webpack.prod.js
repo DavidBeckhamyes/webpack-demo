@@ -7,14 +7,14 @@ const { resolveApp } = require('../utils/path');
 const BundleAnalyzerPlugin =
     require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
-const { merge } = require('webpack-merge')
-const common = require('./webpack.common')
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common');
 
 module.exports = merge(common, {
     // 输出
     output: {
         // bundle 文件名称 【只有这里和开发环境不一样】
-        filename: '[name].[contenthash].bundle.js',
+        filename: '[name].[contenthash:8].bundle.js',
 
         // bundle 文件路径
         path: resolveApp('dist'),
@@ -25,6 +25,10 @@ module.exports = merge(common, {
     plugins: [
         new BundleAnalyzerPlugin(),
     ],
+    // 排除打包依赖项
+    externals: {
+        'jquery': 'jQuery'
+    },
     optimization: {
         splitChunks: {
             // include all types of chunks
