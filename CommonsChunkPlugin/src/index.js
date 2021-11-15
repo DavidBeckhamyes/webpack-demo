@@ -5,6 +5,13 @@ import './hello.js'
 import $ from 'jquery';
 $('body').append('<h3>备案号20210031</h3>');
 
+// 验证按需加载
+document.getElementById("btn").onclick = function () {
+    import(/* webpackChunkName: 'desc', webpackPrefetch: true */'./wp').then(({ desc }) => {
+        alert(desc());
+    })
+}
+
 // 验证Tree Shaking => usedExport
 import { add } from "./math";
 console.log('2 + 4 = ', add(2, 4));
