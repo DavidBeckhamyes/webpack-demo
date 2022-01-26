@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
+  <a-layout class="ant-layout" id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
       <div class="logo" />
       <a-menu
@@ -100,6 +100,9 @@ export default {
 </script>
 
 <style>
+.ant-layout {
+  height: 100vh;
+}
 #components-layout-demo-top-side-2 .logo {
   width: 120px;
   height: 31px;
