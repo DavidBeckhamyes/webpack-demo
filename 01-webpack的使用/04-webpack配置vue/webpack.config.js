@@ -90,13 +90,16 @@ module.exports = {
     ],
 
     resolve: {
+        // 引用时可省略的后缀名
+        extensions: ['.js', '.vue', '.css'],
         // alias别名
+        // 此时用的vue版本是runtime-only的，不能有任何用于编译的template，所以修改指向
         alias: {
             'vue$': 'vue/dist/vue.esm.js'
         }
     },
     devServer: {
-        contentBase: './dist',
-        inline: true,
+        contentBase: './dist',  // 为哪个文件夹提供本地服务，更改编译加载到内存而不是磁盘
+        inline: true,  // 页面是否实时刷新
     }
 }

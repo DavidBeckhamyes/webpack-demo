@@ -61,6 +61,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
+                        // 如果此处用的value是@babel/preset-env就会找.babelrc配置文件的presets项
                         presets: ['es2015']
                     }
                 }
