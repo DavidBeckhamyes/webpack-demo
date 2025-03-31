@@ -76,6 +76,7 @@ const router = new VueRouter({
   // 配置路由和组件之间的映射关系
   routes,
   mode: "history",
+  // linkActiveClass表示对应路由匹配成功时，会给当前元素设置一个样式
   linkActiveClass: "active"
 })
 
