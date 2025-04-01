@@ -12,12 +12,13 @@
 
     <router-link to="/home">首页</router-link>
     <router-link to="/about">关于</router-link>
+    <!-- 第一种方式路由传参 -->
     <!-- <router-link :to="'/user/' + userId">用户</router-link>
     <router-link
       v-bind:to="{ path: '/profile', query: { name: 'why', height: 1.88 } }"
       >档案</router-link
     > -->
-
+    <!-- 第二种方式路由传参 -->
     <button @click="userClick">用户</button>
     <button @click="profileClick">档案</button>
   </div>
